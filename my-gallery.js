@@ -7,7 +7,7 @@ function createGalleryMarkup(images) {
          <li class="gallery__item">
            <a
              class="gallery__link"
-             href="https://cdn.pixabay.com/photo/2010/12/13/10/13/tulips-2546_1280.jpg"
+             href="${original}"
            >
            <img
              class="gallery__image"
@@ -22,6 +22,20 @@ function createGalleryMarkup(images) {
     .join('');
 }
 
-const galleryMarkup = createGalleryMarkup(refs);
-const containerGallery = document.querySelector('.js-gallery');
-containerGallery.insertAdjacentHTML('beforeend', galleryMarkup);
+const containerGalleryEl = document.querySelector('.js-gallery');
+const galleryMarkupEl = createGalleryMarkup(refs);
+containerGalleryEl.insertAdjacentHTML('beforeend', galleryMarkupEl);
+
+function onGalleryImageClick(evt) {
+  if (!evt.target.classList.contains('gallery__image')) {
+    return;
+  }
+  evt.target.closest('.gallery__link').setAttribute('href', '#');
+  backdropEl.classList.add('is-open');
+  originalImageEl.setAttribute('src', evt.target.dataset.source);
+  originalImageEl.setAttribute('alt', evt.target.getAttribute('alt'));
+}
+
+const originalImageEl = document.querySelector('.lightbox__image');
+const backdropEl = document.querySelector('.js-lightbox');
+containerGalleryEl.addEventListener('click', onGalleryImageClick);
