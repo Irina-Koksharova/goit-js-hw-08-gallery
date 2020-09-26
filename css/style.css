@@ -128,7 +128,7 @@ body {
   cursor: pointer;
   transition: background-color var(--animation-duration) var(--timing-function);
   outline: none;
-  background-image: url('../images/icon.svg');
+  background-image: url('../images/icon-close.svg');
   background-position: center;
   background-size: 60%;
   background-repeat: no-repeat;
@@ -137,4 +137,28 @@ body {
 .lightbox__button:hover,
 .lightbox__button:focus {
   background-color: rgba(0, 0, 0, 0.5);
+}
+
+.lightbox__button--prev,
+.lightbox__button--next {
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  padding: 0;
+  margin: 0;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  transition: background-color var(--animation-duration) var(--timing-function);
+  outline: none;
+}
+
+.lightbox__button--prev {
+  left: 13%;
+  background-image: url('../images/icon-prev.svg');
+}
+
+.lightbox__button--next {
+  right: 13%;
+  background-image: url('../images/icon-next.svg');
 }
