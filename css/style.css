@@ -139,6 +139,10 @@ body {
   background-color: rgba(0, 0, 0, 0.5);
 }
 
+ul {
+  list-style-type: none;
+}
+
 .lightbox__button--prev,
 .lightbox__button--next {
   position: absolute;

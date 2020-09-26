@@ -34,10 +34,9 @@ function createGalleryMarkup(images) {
 const galleryMarkup = createGalleryMarkup(images);
 refs.containerGallery.insertAdjacentHTML('beforeend', galleryMarkup);
 
+refs.containerGallery.addEventListener('click', onGalleryImageClickOpenSlider);
+
 function onGalleryImageClickOpenSlider(evt) {
-  window.addEventListener('keydown', onEscKeyPressCloseSlider);
-  window.addEventListener('keydown', onNextKeyPressCloseSlider);
-  window.addEventListener('keydown', onPrevKeyPressCloseSlider);
   if (!evt.target.classList.contains('gallery__image')) {
     return;
   }
@@ -46,26 +45,31 @@ function onGalleryImageClickOpenSlider(evt) {
   refs.originalImage.id = evt.target.id;
   refs.originalImage.setAttribute('src', evt.target.dataset.source);
   refs.originalImage.setAttribute('alt', evt.target.alt);
+
+  window.addEventListener('keydown', onEscKeyPressCloseSlider);
+  window.addEventListener('keydown', onKeyNextPress);
+  window.addEventListener('keydown', onKeyPrevPress);
+  refs.buttonClose.addEventListener('click', onGalleryImageClickCloseSlider);
+  refs.backdrop.addEventListener('click', onBackdropClickCloseSlider);
+  refs.buttonNext.addEventListener('click', onButtonNextClick);
+  refs.buttonPrev.addEventListener('click', onButtonPrevClick);
 }
 
-refs.containerGallery.addEventListener('click', onGalleryImageClickOpenSlider);
-
 function onGalleryImageClickCloseSlider(evt) {
-  window.removeEventListener('keydown', onEscKeyPressCloseSlider);
-  window.removeEventListener('keydown', onNextKeyPressCloseSlider);
-  window.removeEventListener('keydown', onPrevKeyPressCloseSlider);
   refs.backdrop.classList.remove('is-open');
   refs.originalImage.setAttribute('src', '');
   refs.originalImage.setAttribute('alt', '');
+
+  window.removeEventListener('keydown', onEscKeyPressCloseSlider);
+  window.removeEventListener('keydown', onKeyNextPress);
+  window.removeEventListener('keydown', onKeyPrevPress);
 }
-refs.buttonClose.addEventListener('click', onGalleryImageClickCloseSlider);
 
 function onBackdropClickCloseSlider(evt) {
   if (evt.target === refs.overlay) {
     onGalleryImageClickCloseSlider();
   }
 }
-refs.backdrop.addEventListener('click', onBackdropClickCloseSlider);
 
 function onEscKeyPressCloseSlider(evt) {
   if (evt.code === 'Escape') {
@@ -81,21 +85,20 @@ function onButtonNextClick(evt) {
     refs.originalImage.id >= 0 &&
     refs.originalImage.id < imagesGallery.length - 1
   ) {
+    refs.originalImage.id = currentImage + 1;
     refs.originalImage.setAttribute(
       'src',
       imagesGallery[currentImage + 1].dataset.source,
     );
-    refs.originalImage.id = currentImage + 1;
     refs.originalImage.setAttribute('alt', imagesGallery[currentImage + 1].alt);
   } else {
-    refs.originalImage.setAttribute('src', imagesGallery[0].dataset.source);
     refs.originalImage.id = 0;
+    refs.originalImage.setAttribute('src', imagesGallery[0].dataset.source);
     refs.originalImage.setAttribute('alt', imagesGallery[0].alt);
   }
 }
-refs.buttonNext.addEventListener('click', onButtonNextClick);
 
-function onNextKeyPressCloseSlider(evt) {
+function onKeyNextPress(evt) {
   if (evt.code === 'ArrowRight') {
     onButtonNextClick();
   }
@@ -107,27 +110,26 @@ function onButtonPrevClick(evt) {
     refs.originalImage.id > 0 &&
     refs.originalImage.id <= imagesGallery.length - 1
   ) {
+    refs.originalImage.id = currentImage - 1;
     refs.originalImage.setAttribute(
       'src',
       imagesGallery[currentImage - 1].dataset.source,
     );
-    refs.originalImage.id = currentImage - 1;
     refs.originalImage.setAttribute('alt', imagesGallery[currentImage - 1].alt);
   } else {
+    refs.originalImage.id = imagesGallery.length - 1;
     refs.originalImage.setAttribute(
       'src',
       imagesGallery[imagesGallery.length - 1].dataset.source,
     );
-    refs.originalImage.id = imagesGallery.length - 1;
     refs.originalImage.setAttribute(
       'alt',
       imagesGallery[imagesGallery.length - 1].alt,
     );
   }
 }
-refs.buttonPrev.addEventListener('click', onButtonPrevClick);
 
-function onPrevKeyPressCloseSlider(evt) {
+function onKeyPrevPress(evt) {
   if (evt.code === 'ArrowLeft') {
     onButtonPrevClick();
   }
